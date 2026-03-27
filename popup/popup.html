@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TechLens 设置</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      width: 320px;
+      background: #13131f;
+      color: #e0e0e0;
+      font-family: 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', sans-serif;
+      font-size: 14px;
+    }
+
+    /* 头部 */
+    .header {
+      background: linear-gradient(135deg, #1a1a2e, #16213e);
+      padding: 20px 20px 16px;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 4px;
+    }
+
+    .logo-icon { font-size: 24px; }
+
+    .logo-text {
+      font-size: 18px;
+      font-weight: 700;
+      color: #4fc3f7;
+    }
+
+    .tagline {
+      font-size: 12px;
+      color: rgba(255,255,255,0.35);
+      margin-left: 34px;
+    }
+
+    /* 主体内容 */
+    .content { padding: 20px; }
+
+    .section {
+      margin-bottom: 20px;
+    }
+
+    .section-title {
+      font-size: 12px;
+      font-weight: 600;
+      color: rgba(255,255,255,0.4);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 10px;
+    }
+
+    /* 输入框 */
+    .input-group {
+      position: relative;
+    }
+
+    .input-group input {
+      width: 100%;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 8px;
+      padding: 10px 40px 10px 12px;
+      color: #e0e0e0;
+      font-size: 13px;
+      font-family: 'Consolas', monospace;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .input-group input:focus {
+      border-color: #4fc3f7;
+      background: rgba(79,195,247,0.05);
+    }
+
+    .input-group input::placeholder {
+      color: rgba(255,255,255,0.2);
+    }
+
+    .toggle-visibility {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      color: rgba(255,255,255,0.3);
+      cursor: pointer;
+      font-size: 16px;
+      padding: 2px;
+      transition: color 0.15s;
+    }
+
+    .toggle-visibility:hover { color: rgba(255,255,255,0.6); }
+
+    .input-hint {
+      font-size: 11px;
+      color: rgba(255,255,255,0.25);
+      margin-top: 6px;
+      line-height: 1.4;
+    }
+
+    .input-hint a {
+      color: #4fc3f7;
+      text-decoration: none;
+    }
+
+    .input-hint a:hover { text-decoration: underline; }
+
+    /* 快捷键说明 */
+    .shortcut-info {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 8px;
+      padding: 12px;
+    }
+
+    .shortcut-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 8px;
+    }
+
+    .shortcut-row:last-child { margin-bottom: 0; }
+
+    .shortcut-desc {
+      font-size: 13px;
+      color: rgba(255,255,255,0.55);
+    }
+
+    .shortcut-key {
+      display: flex;
+      gap: 4px;
+    }
+
+    kbd {
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 4px;
+      padding: 2px 7px;
+      font-size: 12px;
+      font-family: 'Consolas', monospace;
+      color: #4fc3f7;
+    }
+
+    /* 状态指示 */
+    .status-bar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 12px;
+      border-radius: 8px;
+      font-size: 13px;
+      margin-bottom: 16px;
+    }
+
+    .status-bar.status-ok {
+      background: rgba(76,175,80,0.1);
+      border: 1px solid rgba(76,175,80,0.2);
+      color: #81c784;
+    }
+
+    .status-bar.status-warn {
+      background: rgba(255,193,7,0.1);
+      border: 1px solid rgba(255,193,7,0.2);
+      color: #ffd54f;
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .status-ok  .status-dot { background: #81c784; }
+    .status-warn .status-dot { background: #ffd54f; }
+
+    /* 保存按钮 */
+    .save-btn {
+      width: 100%;
+      padding: 10px;
+      background: linear-gradient(135deg, #1a73e8, #0d47a1);
+      border: none;
+      border-radius: 8px;
+      color: #fff;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: opacity 0.15s, transform 0.1s;
+      font-family: inherit;
+    }
+
+    .save-btn:hover { opacity: 0.9; }
+    .save-btn:active { transform: scale(0.98); }
+    .save-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+    /* 保存反馈 */
+    .save-feedback {
+      text-align: center;
+      font-size: 12px;
+      margin-top: 8px;
+      height: 16px;
+      color: #81c784;
+    }
+
+    /* 分隔线 */
+    .divider {
+      height: 1px;
+      background: rgba(255,255,255,0.05);
+      margin: 4px 0 20px;
+    }
+
+    /* 底部版本 */
+    .footer {
+      padding: 0 20px 16px;
+      text-align: center;
+      font-size: 11px;
+      color: rgba(255,255,255,0.15);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 头部 -->
+  <div class="header">
+    <div class="logo">
+      <span class="logo-icon">🔍</span>
+      <span class="logo-text">TechLens</span>
+    </div>
+    <div class="tagline">技术视频智能识别助手</div>
+  </div>
+
+  <!-- 主体 -->
+  <div class="content">
+
+    <!-- API Key 状态 -->
+    <div id="status-bar" class="status-bar status-warn">
+      <div class="status-dot"></div>
+      <span id="status-text">请配置 API Key 后使用</span>
+    </div>
+
+    <!-- API Key 配置 -->
+    <div class="section">
+      <div class="section-title">阿里云 DashScope API Key</div>
+      <div class="input-group">
+        <input
+          type="password"
+          id="api-key-input"
+          placeholder="sk-xxxxxxxxxxxxxxxxxxxxxxxx"
+          autocomplete="off"
+          spellcheck="false"
+        />
+        <button class="toggle-visibility" id="toggle-btn" title="显示/隐藏">👁</button>
+      </div>
+      <div class="input-hint">
+        前往
+        <a href="https://bailian.console.aliyun.com/#/api-key" target="_blank">阿里云百炼控制台</a>
+        获取 API Key，使用模型：qwen-vl-max
+      </div>
+    </div>
+
+    <!-- 保存按钮 -->
+    <button class="save-btn" id="save-btn">保存设置</button>
+    <div class="save-feedback" id="save-feedback"></div>
+
+    <div class="divider"></div>
+
+    <!-- 快捷键说明 -->
+    <div class="section">
+      <div class="section-title">使用方式</div>
+      <div class="shortcut-info">
+        <div class="shortcut-row">
+          <span class="shortcut-desc">识别当前视频画面</span>
+          <div class="shortcut-key">
+            <kbd>Alt</kbd><kbd>T</kbd>
+          </div>
+        </div>
+        <div class="shortcut-row">
+          <span class="shortcut-desc">点击悬浮按钮</span>
+          <div class="shortcut-key">
+            <kbd>🔍</kbd>
+          </div>
+        </div>
+        <div class="shortcut-row">
+          <span class="shortcut-desc">关闭识别结果</span>
+          <div class="shortcut-key">
+            <kbd>Esc</kbd>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- 底部 -->
+  <div class="footer">TechLens v1.0.0 · 支持 B 站视频</div>
+
+  <script src="popup.js"></script>
+</body>
+</html>
