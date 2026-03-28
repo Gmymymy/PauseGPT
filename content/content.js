@@ -28,11 +28,11 @@
     if (video.readyState < 2) { showToast('❌ 视频尚未加载完成'); return null; }
 
     const canvas = document.createElement('canvas');
-    const scale  = Math.min(1, 1280 / video.videoWidth);
+    const scale  = Math.min(1, 1920 / video.videoWidth);
     canvas.width  = Math.floor(video.videoWidth  * scale);
     canvas.height = Math.floor(video.videoHeight * scale);
     canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
-    return canvas.toDataURL('image/jpeg', 0.75);
+    return canvas.toDataURL('image/jpeg', 0.92);
   }
 
   // ─── 触发入口 ─────────────────────────────────────────────────
